@@ -24,7 +24,7 @@ public class Bag : MonoBehaviour
     {
         int rand = Random.Range(0, sack.Count-1);
         int val = sack[rand];
-        sack.Remove(rand);
+        sack.RemoveAt(rand);
         text.text = sack.Count + "";
         return val;
     }
