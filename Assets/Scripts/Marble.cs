@@ -48,11 +48,16 @@ public class Marble : MonoBehaviour
                 play();
                 s.pile.Add(type);
                 s.text.text = s.pile.Count + "";
-                t.draw(slot, false);
+                t.draw(slot);
             }
             else
             {
-                t.draw(slot, true);
+                t.setActive(true);
+                t.setPlaying(true);
+                t.enemyTray.setPlaying(false);
+                t.enemyTray.setActive(false);
+                t.draw(slot);
+                Debug.Log("Discarded!");
             }
         }
     }
@@ -77,5 +82,7 @@ public class Marble : MonoBehaviour
         }
         t.enemyTray.setPlaying(false);
         t.enemyTray.setActive(true);
+        t.setActive(false);
+        t.setPlaying(false);
     }
 }

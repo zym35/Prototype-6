@@ -22,10 +22,10 @@ public class Tray : MonoBehaviour
     {
         tray = new GameObject[4];
         b.InitialFill();
-        draw(0, false);
-        draw(1, false);
-        draw(2, false);
-        draw(3, false);
+        draw(0);
+        draw(1);
+        draw(2);
+        draw(3);
         if (player == 1)
         {
             setActive(true);
@@ -45,7 +45,7 @@ public class Tray : MonoBehaviour
         
     }
 
-    public void draw(int slot, bool discarding)
+    public void draw(int slot)
     {
         GameObject m = tray[slot];
         tray[slot] = null;
@@ -72,25 +72,15 @@ public class Tray : MonoBehaviour
         marbleInfo.t = this;
         marbleInfo.s = s;
         marbleInfo.type = newMarb;
-        if (discarding)
+        int next = (slot + 1) % 3;
+        if (tray[next] != null)
         {
-            setActive(true);
-            enemyTray.setActive(false);
-        }
-        else
-        {
-            setActive(false);
-            enemyTray.setActive(true);
+            marbleInfo.isPlaying = tray[next].GetComponent<Marble>().isPlaying;
+            marbleInfo.playerActive = tray[next].GetComponent<Marble>().playerActive;
         }
         tray[slot] = Instantiate(marble, new Vector3(xpos[slot], ypos, -1f), Quaternion.identity);
-        bool isPlaying;
         if (m != null)
         {
-            Marble m_Info = m.GetComponent<Marble>();
-            isPlaying = m_Info.isPlaying;
-            marbleInfo.isPlaying = !isPlaying;
-            m_Info.isPlaying = false;
-            m_Info.playerActive = false;
             Destroy(m);
         }
     }
