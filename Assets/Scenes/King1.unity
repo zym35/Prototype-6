@@ -844,10 +844,10 @@ MonoBehaviour:
   b: {fileID: 243603567}
   s: {fileID: 1348501429}
   enemyTray: {fileID: 1802429254}
-  attackMarble: {fileID: 4678478356292786943, guid: f892bcea7dfef412a993b5dd823f843f, type: 3}
-  critMarble: {fileID: -1058474583951497335, guid: 42038d8779a3b4438a96fb8e29ecb60b, type: 3}
-  healMarble: {fileID: -3938415440654012916, guid: 79f542f24785d4df3a593960f935565f, type: 3}
-  shuffleMarble: {fileID: -5086772326197991059, guid: 4648774584a1343089a6362094d72210, type: 3}
+  attackMarble: {fileID: 3911902486462605850, guid: f892bcea7dfef412a993b5dd823f843f, type: 3}
+  critMarble: {fileID: 476978787449428966, guid: 42038d8779a3b4438a96fb8e29ecb60b, type: 3}
+  healMarble: {fileID: 700395935130977024, guid: 79f542f24785d4df3a593960f935565f, type: 3}
+  shuffleMarble: {fileID: 8883991066609631951, guid: 4648774584a1343089a6362094d72210, type: 3}
   xpos:
   - -8
   - -6
@@ -1394,7 +1394,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1802429251}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a95450391bc84b6494d7d722b1df28a, type: 3}
   m_Name: 
@@ -1409,10 +1409,10 @@ MonoBehaviour:
   b: {fileID: 1972104778}
   s: {fileID: 1907327638}
   enemyTray: {fileID: 1112251250}
-  attackMarble: {fileID: 4678478356292786943, guid: f892bcea7dfef412a993b5dd823f843f, type: 3}
-  critMarble: {fileID: -1058474583951497335, guid: 42038d8779a3b4438a96fb8e29ecb60b, type: 3}
-  healMarble: {fileID: -3938415440654012916, guid: 79f542f24785d4df3a593960f935565f, type: 3}
-  shuffleMarble: {fileID: -5086772326197991059, guid: 4648774584a1343089a6362094d72210, type: 3}
+  attackMarble: {fileID: 3911902486462605850, guid: f892bcea7dfef412a993b5dd823f843f, type: 3}
+  critMarble: {fileID: 476978787449428966, guid: 42038d8779a3b4438a96fb8e29ecb60b, type: 3}
+  healMarble: {fileID: 700395935130977024, guid: 79f542f24785d4df3a593960f935565f, type: 3}
+  shuffleMarble: {fileID: 8883991066609631951, guid: 4648774584a1343089a6362094d72210, type: 3}
   xpos:
   - 2
   - 4

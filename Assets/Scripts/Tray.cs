@@ -5,21 +5,23 @@ using TMPro;
 
 public class Tray : MonoBehaviour
 {
-    public Marble[] tray = new Marble[4];
+    public GameObject[] tray;
     public int player;
     public TextMeshPro statusText;
     public Bag b;
     public Shuffle s;
     public Tray enemyTray;
-    public Marble attackMarble;
-    public Marble critMarble;
-    public Marble healMarble;
-    public Marble shuffleMarble;
+    public GameObject attackMarble;
+    public GameObject critMarble;
+    public GameObject healMarble;
+    public GameObject shuffleMarble;
     public float[] xpos = new float[4];
     public float ypos;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        tray = new GameObject[4];
+        b.InitialFill();
         draw(0, false);
         draw(1, false);
         draw(2, false);
@@ -45,10 +47,10 @@ public class Tray : MonoBehaviour
 
     public void draw(int slot, bool discarding)
     {
-        Marble m = tray[slot];
+        GameObject m = tray[slot];
         tray[slot] = null;
         int newMarb = b.draw();
-        Marble marble = null;
+        GameObject marble = null;
         if (newMarb == 0)
         {
             marble = attackMarble;
@@ -65,11 +67,11 @@ public class Tray : MonoBehaviour
         {
             marble = shuffleMarble;
         }
-        marble.slot = slot;
-        marble.t = this;
-        marble.s = s;
-        marble.type = newMarb;
-        tray[slot] = marble;
+        Marble marbleInfo = marble.GetComponent<Marble>();
+        marbleInfo.slot = slot;
+        marbleInfo.t = this;
+        marbleInfo.s = s;
+        marbleInfo.type = newMarb;
         if (discarding)
         {
             setActive(true);
@@ -80,15 +82,16 @@ public class Tray : MonoBehaviour
             setActive(false);
             enemyTray.setActive(true);
         }
-        Instantiate(marble, new Vector3(xpos[slot], ypos, -1f), Quaternion.identity);
+        tray[slot] = Instantiate(marble, new Vector3(xpos[slot], ypos, -1f), Quaternion.identity);
         bool isPlaying;
         if (m != null)
         {
-            isPlaying = m.isPlaying;
-            marble.isPlaying = !isPlaying;
-            m.isPlaying = false;
-            m.playerActive = false;
-            m.transform.position += new Vector3(100f, 0f, 0f);
+            Marble m_Info = m.GetComponent<Marble>();
+            isPlaying = m_Info.isPlaying;
+            marbleInfo.isPlaying = !isPlaying;
+            m_Info.isPlaying = false;
+            m_Info.playerActive = false;
+            Destroy(m);
         }
     }
 
@@ -98,7 +101,7 @@ public class Tray : MonoBehaviour
         {
             if (tray[y] != null)
             {
-                tray[y].playerActive = active;
+                tray[y].GetComponent<Marble>().playerActive = active;
             }
         }
     }
@@ -109,7 +112,7 @@ public class Tray : MonoBehaviour
         {
             if (tray[y] != null)
             {
-                tray[y].isPlaying = active;
+                tray[y].GetComponent<Marble>().isPlaying = active;
             }
         }
     }
