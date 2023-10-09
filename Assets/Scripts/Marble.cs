@@ -18,7 +18,7 @@ public class Marble : MonoBehaviour
 
     private void Awake()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -61,19 +61,19 @@ public class Marble : MonoBehaviour
     {
         if (type == 0)
         {
-
+            Debug.Log("Used Attack Marble!");
         }
         else if (type == 1)
         {
-
+            Debug.Log("Used Crit Marble");
         }
         else if (type == 2)
         {
-
+            Debug.Log("Used Heal Marble!");
         }
         else if (type == 3)
         {
-
+            Debug.Log("Used Shuffle Marble!");
         }
         t.enemyTray.setPlaying(false);
         t.enemyTray.setActive(true);

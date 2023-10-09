@@ -80,13 +80,15 @@ public class Tray : MonoBehaviour
             setActive(false);
             enemyTray.setActive(true);
         }
-        Instantiate(marble, new Vector3(xpos[slot], ypos, 0), Quaternion.identity);
+        Instantiate(marble, new Vector3(xpos[slot], ypos, -1f), Quaternion.identity);
         bool isPlaying;
         if (m != null)
         {
             isPlaying = m.isPlaying;
             marble.isPlaying = !isPlaying;
-            Destroy(m);
+            m.isPlaying = false;
+            m.playerActive = false;
+            m.transform.position += new Vector3(100f, 0f, 0f);
         }
     }
 
@@ -94,7 +96,10 @@ public class Tray : MonoBehaviour
     {
         for(int y = 0; y < tray.Length; y++)
         {
-            tray[y].playerActive = active;
+            if (tray[y] != null)
+            {
+                tray[y].playerActive = active;
+            }
         }
     }
 
@@ -102,7 +107,10 @@ public class Tray : MonoBehaviour
     {
         for (int y = 0; y < tray.Length; y++)
         {
-            tray[y].isPlaying = active;
+            if (tray[y] != null)
+            {
+                tray[y].isPlaying = active;
+            }
         }
     }
 }
