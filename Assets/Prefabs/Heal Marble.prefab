@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5385591407169435789}
   - component: {fileID: -3938415440654012916}
   - component: {fileID: 7457296352914077230}
+  - component: {fileID: 205349220138697224}
   m_Layer: 0
   m_Name: Heal Marble
   m_TagString: Untagged
@@ -100,11 +101,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  isPlaying: 0
   playerActive: 0
   type: 2
-  t: {fileID: 0}
-  s: {fileID: 0}
+  level: 1
+  tray: {fileID: 0}
+  discard: {fileID: 0}
+  selected: 0
 --- !u!58 &7457296352914077230
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -140,6 +142,24 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &205349220138697224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700395935130977024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &4072940504999279448
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,105 +6,86 @@ using TMPro;
 
 public class Tray : MonoBehaviour
 {
-    public GameObject[] tray;
-    public int player;
+    public List<GameObject> tray;
     public TextMeshPro statusText;
-    public Bag b;
-    public Shuffle s;
+    public Bag bag;
+    public Discard discard;
     public Tray enemyTray;
-    public GameObject attackMarble;
-    public GameObject critMarble;
-    public GameObject healMarble;
-    public GameObject shuffleMarble;
+    public GameObject attackMarble, critMarble, healMarble, shuffleMarble;
     public float[] xpos = new float[4];
     public float ypos;
-    // Start is called before the first frame update
-    void Awake()
+    public bool active;
+
+    public void OnButtonClick(string action)
     {
-        tray = new GameObject[4];
-        b.InitialFill();
-        draw(0);
-        draw(1);
-        draw(2);
-        draw(3);
-        if (player == 1)
+        if (!active) return;
+        if (action == "End")
         {
-            setActive(true);
-            setPlaying(true);
+            foreach (GameObject m in tray)
+            {
+                discard.AddToDiscard(m.GetComponent<Marble>().marbleId);
+                Destroy(m);
+            }
+            tray.Clear();
+
+            enemyTray.active = true;
+            enemyTray.Draw();
+            active = false;
+            return;
         }
-        else if (player == 2)
+        
+        foreach (GameObject m in tray)
         {
-            setActive(false);
-            setPlaying(false);
+            var marble = m.GetComponent<Marble>();
+            if (!marble.selected) continue;
+
+            switch (action)
+            {
+                case "Use":
+                    marble.Use();
+                    break;
+                case "Sell":
+                    marble.Sell();
+                    break;
+            }
+            
+            return;
         }
+    }
+
+    private void Awake()
+    {
+        tray = new List<GameObject>();
+        
+        bag.InitialFill();
+        if (active)
+            Draw();
+        
         statusText.text = "Player 1 playing";
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Draw()
     {
+        tray.Clear();
+        for (int i = 0; i < 4; i++)
+        {
+            MarbleId newMarb = bag.Draw();
+            GameObject marblePrefab = newMarb.Type switch
+            {
+                MarbleType.Attack => attackMarble,
+                MarbleType.Block => critMarble,
+                MarbleType.Heal => healMarble,
+                MarbleType.Shuffle => shuffleMarble,
+                _ => null
+            };
         
-    }
-
-    public void draw(int slot)
-    {
-        GameObject m = tray[slot];
-        tray[slot] = null;
-        int newMarb = b.draw();
-        GameObject marble = null;
-        if (newMarb == 0)
-        {
-            marble = attackMarble;
-        }
-        else if (newMarb == 1)
-        {
-            marble = critMarble;
-        }
-        else if (newMarb == 2)
-        {
-            marble = healMarble;
-        }
-        else if (newMarb == 3)
-        {
-            marble = shuffleMarble;
-        }
-        Marble marbleInfo = marble.GetComponent<Marble>();
-        marbleInfo.slot = slot;
-        marbleInfo.t = this;
-        marbleInfo.s = s;
-        marbleInfo.type = newMarb;
-        int next = (slot + 1) % 3;
-        if (tray[next] != null)
-        {
-            marbleInfo.isPlaying = tray[next].GetComponent<Marble>().isPlaying;
-            marbleInfo.playerActive = tray[next].GetComponent<Marble>().playerActive;
-        }
-        tray[slot] = Instantiate(marble, new Vector3(xpos[slot], ypos, -1f), Quaternion.identity);
-        if (m != null)
-        {
-            Destroy(m);
-        }
-    }
-
-    public void setActive(bool active)
-    {
-        for(int y = 0; y < tray.Length; y++)
-        {
-            if (tray[y] != null)
-            {
-                tray[y].GetComponent<Marble>().playerActive = active;
-            }
-        }
-    }
-
-    public void setPlaying(bool active)
-    {
-        for (int y = 0; y < tray.Length; y++)
-        {
-            if (tray[y] != null)
-            {
-                tray[y].GetComponent<Marble>().isPlaying = active;
-            }
+            var m = Instantiate(marblePrefab, new Vector3(xpos[i], ypos, -1f), Quaternion.identity);
+            Marble marbleInfo = m.GetComponent<Marble>();
+            marbleInfo.tray = this;
+            marbleInfo.discard = discard;
+            marbleInfo.marbleId = newMarb;
+            
+            tray.Add(m);
         }
     }
 }

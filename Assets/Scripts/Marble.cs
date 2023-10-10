@@ -1,29 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct MarbleId
+{
+    public MarbleType Type;
+    public int Level;
+}
+
+public enum MarbleType
+{
+    Attack,
+    Block,
+    Heal,
+    Shuffle
+}
+
 public class Marble : MonoBehaviour
 {
-    public int slot; //slot is 0 - 3
-    public bool isPlaying; //true if active player is playing, false if discarding
-    public bool playerActive; //true if it is the marble owner's turn, false otherwise
-    public int type; //0 = attack, 1 = crit, 2 = heal, 3 = recycle
-    public Tray t;
-    public Shuffle s;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    private void Awake()
-    {
-
-    }
+    public MarbleId marbleId;
+    public Tray tray;
+    public Discard discard;
+    public bool selected;
 
     // Update is called once per frame
     private void Update()
     {
+        if (!tray.active) return;
+        
         // Check if the left mouse button is clicked
         if (Input.GetMouseButtonDown(0))
         {
@@ -34,55 +39,48 @@ public class Marble : MonoBehaviour
 
             if (collider != null && collider.OverlapPoint(mousePosition))
             {
-                OnClick();
+                foreach (var m in FindObjectsOfType<Marble>())
+                {
+                    m.selected = false;
+                }
+                selected = true;
+        
+                // TODO highlight
             }
         }
     }
 
-    public void OnClick()
+    public void Use()
     {
-        if (playerActive)
+        switch (marbleId.Type)
         {
-            if (isPlaying)
-            {
-                play();
-                s.pile.Add(type);
-                s.text.text = s.pile.Count + "";
-                t.draw(slot);
-            }
-            else
-            {
-                t.setActive(true);
-                t.setPlaying(true);
-                t.enemyTray.setPlaying(false);
-                t.enemyTray.setActive(false);
-                t.draw(slot);
-                Debug.Log("Discarded!");
-            }
+            case MarbleType.Attack:
+                break;
+            case MarbleType.Block:
+                break;
+            case MarbleType.Heal:
+                break;
+            case MarbleType.Shuffle:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
+        
+        Discard();
     }
 
-    public void play()
+    public void Discard()
     {
-        if (type == 0)
-        {
-            Debug.Log("Used Attack Marble!");
-        }
-        else if (type == 1)
-        {
-            Debug.Log("Used Crit Marble");
-        }
-        else if (type == 2)
-        {
-            Debug.Log("Used Heal Marble!");
-        }
-        else if (type == 3)
-        {
-            Debug.Log("Used Shuffle Marble!");
-        }
-        t.enemyTray.setPlaying(false);
-        t.enemyTray.setActive(true);
-        t.setActive(false);
-        t.setPlaying(false);
+        tray.tray.Remove(gameObject);
+        discard.AddToDiscard(marbleId);
+        Destroy(gameObject);
+    }
+
+    public void Sell()
+    {
+        Discard();
+        
+        //TODO sell
+        
     }
 }
