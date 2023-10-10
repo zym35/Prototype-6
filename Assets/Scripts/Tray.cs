@@ -7,29 +7,28 @@ using TMPro;
 public class Tray : MonoBehaviour
 {
     public List<GameObject> tray;
-    public TextMeshPro statusText;
+    public TMP_Text statusText, HPText, moneyText, blockText, energyText;
     public Bag bag;
     public Discard discard;
     public Tray enemyTray;
-    public GameObject attackMarble, critMarble, healMarble, shuffleMarble;
+    public GameObject attackMarble, blockMarble, healMarble, shuffleMarble;
     public float[] xpos = new float[4];
     public float ypos;
     public bool active;
+    public int money, HP, block, energy;
 
     public void OnButtonClick(string action)
     {
         if (!active) return;
         if (action == "End")
         {
-            foreach (GameObject m in tray)
-            {
-                discard.AddToDiscard(m.GetComponent<Marble>().marbleId);
-                Destroy(m);
-            }
-            tray.Clear();
-
+            TrayToDiscard();
+            
+            money = 0;
             enemyTray.active = true;
             enemyTray.Draw();
+            enemyTray.energy = 4;
+            enemyTray.block = 0;
             active = false;
             return;
         }
@@ -42,7 +41,11 @@ public class Tray : MonoBehaviour
             switch (action)
             {
                 case "Use":
-                    marble.Use();
+                    if (energy > 0)
+                    {
+                        marble.Use();
+                        energy--;
+                    }
                     break;
                 case "Sell":
                     marble.Sell();
@@ -51,6 +54,40 @@ public class Tray : MonoBehaviour
             
             return;
         }
+    }
+
+    public void TrayToDiscard()
+    {
+        foreach (GameObject m in tray)
+        {
+            discard.AddToDiscard(m.GetComponent<Marble>().marbleId);
+            Destroy(m);
+        }
+        tray.Clear();
+    }
+
+    public void IncreaseMoney(int delta)
+    {
+        money += delta;
+    }
+    
+    public void Attacked(int power)
+    {
+        var delta = Mathf.Max(0, power - block);
+        HP -= delta;
+        block = Mathf.Max(0, block - power);
+    }
+
+    public void Heal(int delta)
+    {
+        HP += delta;
+        if (HP > 6)
+            HP = 6;
+    }
+
+    public void IncreaseBlock(int delta)
+    {
+        block += delta;
     }
 
     private void Awake()
@@ -64,7 +101,15 @@ public class Tray : MonoBehaviour
         statusText.text = "Player 1 playing";
     }
 
-    private void Draw()
+    private void Update()
+    {
+        moneyText.text = $"Money: {money}";
+        HPText.text = $"HP: {HP}";
+        blockText.text = $"Block: {block}";
+        energyText.text = $"Energy: {energy}";
+    }
+
+    public void Draw()
     {
         tray.Clear();
         for (int i = 0; i < 4; i++)
@@ -73,7 +118,7 @@ public class Tray : MonoBehaviour
             GameObject marblePrefab = newMarb.Type switch
             {
                 MarbleType.Attack => attackMarble,
-                MarbleType.Block => critMarble,
+                MarbleType.Block => blockMarble,
                 MarbleType.Heal => healMarble,
                 MarbleType.Shuffle => shuffleMarble,
                 _ => null

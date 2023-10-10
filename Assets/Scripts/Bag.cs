@@ -13,9 +13,9 @@ public class Bag : MonoBehaviour
 
     public void InitialFill()
     {
-        for(int y = 0; y < 4; y++)
+        for(int y = 0; y < 3; y++)
         {
-            for(int i = 0; i < 1; i++)
+            for(int i = 0; i < 2; i++)
             {
                 sack.Add(new MarbleId()
                 {
@@ -24,6 +24,11 @@ public class Bag : MonoBehaviour
                 });
             }
         }
+        sack.Add(new MarbleId()
+        {
+            Level = 0,
+            Type = MarbleType.Shuffle
+        });
     }
 
     private void Update()
@@ -31,15 +36,20 @@ public class Bag : MonoBehaviour
         text.text = sack.Count.ToString();
     }
 
+    public void DiscardToBag()
+    {
+        foreach (MarbleId m in discard.pile)
+        {
+            sack.Add(m);
+        }
+        discard.pile.Clear();
+    }
+
     public MarbleId Draw()
     {
         if (sack.Count == 0)
         {
-            foreach (MarbleId m in discard.pile)
-            {
-                sack.Add(m);
-            }
-            discard.pile.Clear();
+            DiscardToBag();
         }
         int rand = Random.Range(0, sack.Count-1);
         MarbleId val = sack[rand];
