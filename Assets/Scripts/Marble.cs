@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
+using TorcheyeUtility;
 using UnityEngine;
 
 public struct MarbleId
@@ -62,12 +64,14 @@ public class Marble : MonoBehaviour
                     m.selected = false;
                 }
                 selected = true;
+                AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Select);
             }
         }
     }
 
     private void Buy()
     {
+        AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Buy);
         if (tray.active)
         {
             if (!tray.TryBuy(price)) return;
@@ -88,17 +92,21 @@ public class Marble : MonoBehaviour
         {
             case MarbleType.Attack:
                 tray.enemyTray.Attacked(marbleId.Level + 1);
+                AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Attack);
                 break;
             case MarbleType.Block:
                 tray.IncreaseBlock(marbleId.Level + 1);
+                AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Block);
                 break;
             case MarbleType.Heal:
                 tray.Heal(marbleId.Level + 1);
+                AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Heal);
                 break;
             case MarbleType.Shuffle:
                 tray.TrayToDiscard();
                 tray.bag.DiscardToBag();
                 tray.Draw(marbleId.Level);
+                AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Shuffle);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -109,7 +117,7 @@ public class Marble : MonoBehaviour
     {
         tray.tray.Remove(gameObject);
         discard.AddToDiscard(marbleId);
-        Destroy(gameObject);
+        transform.DOMove(discard.transform.position, 1).onComplete += delegate { Destroy(gameObject); };
     }
 
     public void Sell()

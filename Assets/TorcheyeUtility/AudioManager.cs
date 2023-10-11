@@ -10,11 +10,12 @@ namespace TorcheyeUtility
         public enum SoundEffect
         {
             // Add name of the sound here
-            GemSpawn,
-            Score,
-            Pickup,
-            Blow,
-            Knockoff
+            Attack,
+            Block,
+            Buy,
+            Heal,
+            Select,
+            Shuffle
         }
 
         public enum Music

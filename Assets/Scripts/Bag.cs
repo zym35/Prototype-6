@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using TorcheyeUtility;
 using Random = UnityEngine.Random;
 
 public class Bag : MonoBehaviour
@@ -40,6 +41,7 @@ public class Bag : MonoBehaviour
             sack.Add(m);
         }
         discard.pile.Clear();
+        AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Shuffle);
         return true;
     }
 

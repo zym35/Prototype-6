@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -86,7 +87,7 @@ public class Market : MonoBehaviour
                 {
                     var m = positions[i].GetChild(0);
                     m.SetParent(positions[firstEmpty]);
-                    m.localPosition = Vector3.zero;
+                    m.DOMove(positions[firstEmpty].position, 1);
                     m.GetComponent<Marble>().price = firstEmpty + 1;
                     firstEmpty++;
                     break;

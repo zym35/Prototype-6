@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -68,7 +69,7 @@ public class Tray : MonoBehaviour
         foreach (GameObject m in tray)
         {
             discard.AddToDiscard(m.GetComponent<Marble>().marbleId);
-            Destroy(m);
+            m.transform.DOMove(discard.transform.position, 1).onComplete += delegate { Destroy(m); };
         }
         tray.Clear();
     }
@@ -182,7 +183,7 @@ public class Tray : MonoBehaviour
             if (bag.sack.Count == 0)
                 if (!bag.DiscardToBag())
                     return;
-            MarbleId newMarb = bag.Draw();
+            MarbleId newMarb = bag.Draw(level);
             GameObject marblePrefab = newMarb.Type switch
             {
                 MarbleType.Attack => attackMarble,
@@ -192,7 +193,8 @@ public class Tray : MonoBehaviour
                 _ => null
             };
         
-            var m = Instantiate(marblePrefab, new Vector3(xpos[i], ypos, -1f), Quaternion.identity);
+            var m = Instantiate(marblePrefab, bag.transform.position, Quaternion.identity);
+            m.transform.DOMove(new Vector3(xpos[i], ypos, -1f), 1);
             Marble marbleInfo = m.GetComponent<Marble>();
             marbleInfo.tray = this;
             marbleInfo.discard = discard;
