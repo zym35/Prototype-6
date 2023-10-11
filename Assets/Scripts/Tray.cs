@@ -19,6 +19,7 @@ public class Tray : MonoBehaviour
     public int money, HP, block, energy;
     public Transform removePanelParent, removePanel;
     public GameObject removeMarbleAttack, removeMarbleBlock, removeMarbleHeal, removeMarbleShuffle;
+    public GameObject gameEnd;
 
     public void OnButtonClick(string action)
     {
@@ -91,6 +92,12 @@ public class Tray : MonoBehaviour
         HP -= delta;
         block = Mathf.Max(0, block - power);
 
+        if (HP == 0)
+        {
+            gameEnd.SetActive(true);
+            gameEnd.GetComponentInChildren<TMP_Text>().text = enemyTray.name + " Wins!";
+            return;
+        }
         if (delta == 0) return;
         
         for (int i = 0; i < removePanel.childCount; i++)
