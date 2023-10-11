@@ -167,7 +167,7 @@ public class Tray : MonoBehaviour
         energyText.text = $"Energy: {energy}";
     }
 
-    public void Draw()
+    public void Draw(int level = 0)
     {
         tray.Clear();
         for (int i = 0; i < 4; i++)

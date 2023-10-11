@@ -43,15 +43,20 @@ public class Bag : MonoBehaviour
         return true;
     }
 
-    public MarbleId Draw()
+    public MarbleId Draw(int level = 0)
     {
-        if (sack.Count == 0)
+        MarbleId highest = new MarbleId()
         {
-            DiscardToBag();
+            Level = -1
+        };
+        for (int i = 0; i < Mathf.Pow(2, level); i++)
+        {
+            int rand = Random.Range(0, sack.Count-1);
+            if (sack[rand].Level > highest.Level)
+                highest = sack[rand];
         }
-        int rand = Random.Range(0, sack.Count-1);
-        MarbleId val = sack[rand];
-        sack.RemoveAt(rand);
-        return val;
+        
+        sack.Remove(highest);
+        return highest;
     }
 }

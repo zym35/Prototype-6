@@ -98,7 +98,7 @@ public class Marble : MonoBehaviour
             case MarbleType.Shuffle:
                 tray.TrayToDiscard();
                 tray.bag.DiscardToBag();
-                tray.Draw();
+                tray.Draw(marbleId.Level);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
