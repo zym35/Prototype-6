@@ -7097,7 +7097,7 @@ MonoBehaviour:
   healMarble: {fileID: 476978787449428966, guid: 42038d8779a3b4438a96fb8e29ecb60b, type: 3}
   shuffleMarble: {fileID: 8883991066609631951, guid: 4648774584a1343089a6362094d72210, type: 3}
   tray1: {fileID: 1112251250}
-  amountBeforeLevelUp: 070000000800000009000000
+  amountBeforeLevelUp: 060000000700000008000000
   levelUpCounter: 0
 --- !u!1 &2007566974
 GameObject:

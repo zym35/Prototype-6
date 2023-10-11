@@ -94,7 +94,7 @@ public class Tray : MonoBehaviour
         HP -= delta;
         block = Mathf.Max(0, block - power);
 
-        if (HP == 0)
+        if (HP <= 0)
         {
             gameEnd.SetActive(true);
             gameEnd.GetComponentInChildren<TMP_Text>().text = enemyTray.name + " Wins!";
