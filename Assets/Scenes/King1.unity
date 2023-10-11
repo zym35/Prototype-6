@@ -5986,7 +5986,7 @@ MonoBehaviour:
   active: 0
   money: 0
   HP: 6
-  block: 0
+  block: 1
   energy: 4
   removePanelParent: {fileID: 2012175977}
   removePanel: {fileID: 249326223}
@@ -7097,7 +7097,7 @@ MonoBehaviour:
   healMarble: {fileID: 476978787449428966, guid: 42038d8779a3b4438a96fb8e29ecb60b, type: 3}
   shuffleMarble: {fileID: 8883991066609631951, guid: 4648774584a1343089a6362094d72210, type: 3}
   tray1: {fileID: 1112251250}
-  amountBeforeLevelUp: 080000000800000008000000
+  amountBeforeLevelUp: 070000000800000009000000
   levelUpCounter: 0
 --- !u!1 &2007566974
 GameObject:
@@ -7690,6 +7690,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7475980096143543195, guid: ecfbc5c4e338d5441ad5e5736e927243, type: 3}
+      propertyPath: soundEffectClips.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475980096143543195, guid: ecfbc5c4e338d5441ad5e5736e927243, type: 3}
+      propertyPath: soundEffectClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 83bbf7d53cfcd4919b8c9a20a18ec137, type: 3}
+    - target: {fileID: 7475980096143543195, guid: ecfbc5c4e338d5441ad5e5736e927243, type: 3}
+      propertyPath: soundEffectClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: a80c126f244bc4f4190d60560b428968, type: 3}
+    - target: {fileID: 7475980096143543195, guid: ecfbc5c4e338d5441ad5e5736e927243, type: 3}
+      propertyPath: soundEffectClips.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: c85f3db1a071645dcb87d67189b32f3f, type: 3}
+    - target: {fileID: 7475980096143543195, guid: ecfbc5c4e338d5441ad5e5736e927243, type: 3}
+      propertyPath: soundEffectClips.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: f538cacc340234af2870100b72410eca, type: 3}
+    - target: {fileID: 7475980096143543195, guid: ecfbc5c4e338d5441ad5e5736e927243, type: 3}
+      propertyPath: soundEffectClips.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 86e7764cc42f84273abab7fef4004fba, type: 3}
+    - target: {fileID: 7475980096143543195, guid: ecfbc5c4e338d5441ad5e5736e927243, type: 3}
+      propertyPath: soundEffectClips.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: e03595a48f1a1461ab6c25580fb1b003, type: 3}
+    - target: {fileID: 7475980096143543195, guid: ecfbc5c4e338d5441ad5e5736e927243, type: 3}
+      propertyPath: soundEffectClips.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 7c27b451765c99647b43a91a56890be4, type: 3}
     - target: {fileID: 8498509875769624250, guid: ecfbc5c4e338d5441ad5e5736e927243, type: 3}
       propertyPath: Loop
       value: 1

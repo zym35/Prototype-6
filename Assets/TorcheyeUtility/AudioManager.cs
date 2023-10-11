@@ -15,7 +15,8 @@ namespace TorcheyeUtility
             Buy,
             Heal,
             Select,
-            Shuffle
+            Shuffle,
+            Hurt
         }
 
         public enum Music

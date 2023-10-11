@@ -122,7 +122,8 @@ public class Marble : MonoBehaviour
 
     public void Sell()
     {
+        AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Buy);
         Discard();
-        tray.IncreaseMoney(marbleId.Level + 1);
+        tray.IncreaseMoney(1);
     }
 }

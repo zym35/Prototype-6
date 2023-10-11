@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using TMPro;
+using TorcheyeUtility;
 using UnityEngine.UI;
 
 public class Tray : MonoBehaviour
@@ -117,6 +118,7 @@ public class Tray : MonoBehaviour
         }
         
         removePanelParent.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySoundEffect(AudioManager.SoundEffect.Hurt);
 
         void InstantiateRemoveMarble(MarbleId id, List<MarbleId> from)
         {
