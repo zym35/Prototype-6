@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Tray : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class Tray : MonoBehaviour
     public float ypos;
     public bool active;
     public int money, HP, block, energy;
+    public Transform removePanelParent, removePanel;
+    public GameObject removeMarbleAttack, removeMarbleBlock, removeMarbleHeal, removeMarbleShuffle;
 
     public void OnButtonClick(string action)
     {
@@ -25,10 +28,13 @@ public class Tray : MonoBehaviour
             TrayToDiscard();
             
             money = 0;
+            FindObjectOfType<Market>().Refill();
+            
             enemyTray.active = true;
             enemyTray.Draw();
             enemyTray.energy = 4;
             enemyTray.block = 0;
+            
             active = false;
             return;
         }
@@ -70,12 +76,64 @@ public class Tray : MonoBehaviour
     {
         money += delta;
     }
+
+    public bool TryBuy(int price)
+    {
+        if (money < price)
+            return false;
+        money -= price;
+        return true;
+    }
     
     public void Attacked(int power)
     {
         var delta = Mathf.Max(0, power - block);
         HP -= delta;
         block = Mathf.Max(0, block - power);
+
+        if (delta == 0) return;
+        
+        for (int i = 0; i < removePanel.childCount; i++)
+        {
+            Destroy(removePanel.GetChild(i).gameObject);
+        }
+
+        foreach (MarbleId id in bag.sack)
+        {
+            InstantiateRemoveMarble(id, bag.sack);
+        }
+        
+        foreach (MarbleId id in discard.pile)
+        {
+            InstantiateRemoveMarble(id, discard.pile);
+        }
+        
+        removePanelParent.gameObject.SetActive(true);
+
+        void InstantiateRemoveMarble(MarbleId id, List<MarbleId> from)
+        {
+            var rm = Instantiate(id.Type switch
+            {
+                MarbleType.Attack => removeMarbleAttack,
+                MarbleType.Block => removeMarbleBlock,
+                MarbleType.Heal => removeMarbleHeal,
+                MarbleType.Shuffle => removeMarbleShuffle,
+                _ => throw new ArgumentOutOfRangeException()
+            }, removePanel);
+            rm.GetComponent<Image>().color = id.Level switch
+            {
+                0 => Color.grey,
+                1 => new Color(90 / 255f, 188 / 255f, 216 / 255f),
+                2 => Color.magenta,
+                3 => Color.yellow,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            rm.GetComponent<Button>().onClick.AddListener(delegate
+            {
+                from.Remove(id);
+                removePanelParent.gameObject.SetActive(false);
+            });
+        }
     }
 
     public void Heal(int delta)
@@ -114,6 +172,9 @@ public class Tray : MonoBehaviour
         tray.Clear();
         for (int i = 0; i < 4; i++)
         {
+            if (bag.sack.Count == 0)
+                if (!bag.DiscardToBag())
+                    return;
             MarbleId newMarb = bag.Draw();
             GameObject marblePrefab = newMarb.Type switch
             {
@@ -129,6 +190,7 @@ public class Tray : MonoBehaviour
             marbleInfo.tray = this;
             marbleInfo.discard = discard;
             marbleInfo.marbleId = newMarb;
+            marbleInfo.price = -1;
             
             tray.Add(m);
         }

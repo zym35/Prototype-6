@@ -24,11 +24,6 @@ public class Bag : MonoBehaviour
                 });
             }
         }
-        sack.Add(new MarbleId()
-        {
-            Level = 0,
-            Type = MarbleType.Shuffle
-        });
     }
 
     private void Update()
@@ -36,13 +31,16 @@ public class Bag : MonoBehaviour
         text.text = sack.Count.ToString();
     }
 
-    public void DiscardToBag()
+    public bool DiscardToBag()
     {
+        if (discard.pile.Count == 0)
+            return false;
         foreach (MarbleId m in discard.pile)
         {
             sack.Add(m);
         }
         discard.pile.Clear();
+        return true;
     }
 
     public MarbleId Draw()

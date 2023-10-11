@@ -23,12 +23,21 @@ public class Marble : MonoBehaviour
     public Tray tray;
     public Discard discard;
     public bool selected;
-    public bool inMarket;
+    public int price = -1;
+    public GameObject highlight;
+    public SpriteRenderer spriteRenderer;
 
-    // Update is called once per frame
     private void Update()
     {
-        if (!tray.active) return;
+        highlight.SetActive(selected);
+        spriteRenderer.color = marbleId.Level switch
+        {
+            0 => Color.grey,
+            1 => new Color(90 / 255f, 188 / 255f, 216 / 255f),
+            2 => Color.magenta,
+            3 => Color.yellow,
+            _ => throw new ArgumentOutOfRangeException()
+        };
         
         // Check if the left mouse button is clicked
         if (Input.GetMouseButtonDown(0))
@@ -41,28 +50,35 @@ public class Marble : MonoBehaviour
             if (collider == null || !collider.OverlapPoint(mousePosition)) 
                 return;
             
-            if (inMarket)
+            if (price != -1)
             {
-                if (tray.active)
-                {
-                    tray.discard.AddToDiscard(marbleId);
-                }
-                else
-                {
-                    tray.enemyTray.discard.AddToDiscard(marbleId);
-                }
+                Buy();
             }
             else
             {
+                if (!tray.active) return;
                 foreach (var m in FindObjectsOfType<Marble>())
                 {
                     m.selected = false;
                 }
                 selected = true;
-        
-                // TODO highlight
             }
         }
+    }
+
+    private void Buy()
+    {
+        if (tray.active)
+        {
+            if (!tray.TryBuy(price)) return;
+            tray.discard.AddToDiscard(marbleId);
+        }
+        else
+        {
+            if (!tray.enemyTray.TryBuy(price)) return;
+            tray.enemyTray.discard.AddToDiscard(marbleId);
+        }
+        Destroy(gameObject);
     }
 
     public void Use()
@@ -100,6 +116,5 @@ public class Marble : MonoBehaviour
     {
         Discard();
         tray.IncreaseMoney(marbleId.Level + 1);
-        //TODO sell
     }
 }
